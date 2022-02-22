@@ -1,6 +1,7 @@
 package ch.springboot.receipe.springboot;
 
 import ch.springboot.receipe.models.Ingredient;
+import ch.springboot.receipe.models.Notes;
 import ch.springboot.receipe.models.Recipe;
 import ch.springboot.receipe.repositories.RecipeRepository;
 import ch.springboot.receipe.repositories.UnitOfMeasureRepository;
@@ -28,6 +29,7 @@ public class SpringBootCommandLineRunner implements CommandLineRunner {
 
         if(recipeRepository.count() == 0) {
             System.out.println("--- How to Make the Best Guacamole --- ");
+
             Recipe guacamole = new Recipe();
             guacamole.setDescription("The best guacamole keeps it simple: just ripe avocados, salt, a squeeze of lime, onions, chilis, cilantro, and some chopped tomato. Serve it as a dip at your next party or spoon it on top of tacos for an easy dinner upgrade.");
             guacamole.setCookTime(10);
@@ -36,6 +38,28 @@ public class SpringBootCommandLineRunner implements CommandLineRunner {
             guacamole.setSource("https://www.simplyrecipes.com/");
             guacamole.setUrl("https://www.simplyrecipes.com/recipes/perfect_guacamole/");
             guacamole.setDifficulty(Difficulty.EASY);
+            guacamole.setDirections("1. Cut the avocado:\n" +
+                    "Cut the avocados in half. Remove the pit. Score the inside of the avocado with a blunt knife and scoop out the flesh with a spoon. (See How to Cut and Peel an Avocado.) Place in a bowl." +
+                    "2. Mash the avocado flesh:\n" +
+                    "Using a fork, roughly mash the avocado. (Don't overdo it! The guacamole should be a little chunky.)" +
+                    "3. Add remaining ingredients to taste:\n" +
+                    "Sprinkle with salt and lime (or lemon) juice. The acid in the lime juice will provide some balance to the richness of the avocado and will help delay the avocados from turning brown.\n" +
+                    "\n" +
+                    "Add the chopped onion, cilantro, black pepper, and chilis. Chili peppers vary individually in their spiciness. So, start with a half of one chili pepper and add more to the guacamole to your desired degree of heat.\n" +
+                    "\n" +
+                    "Remember that much of this is done to taste because of the variability in the fresh ingredients. Start with this recipe and adjust to your taste." +
+                    "4. Serve immediately:\n" +
+                    "If making a few hours ahead, place plastic wrap on the surface of the guacamole and press down to cover it to prevent air reaching it. (The oxygen in the air causes oxidation which will turn the guacamole brown.)\n" +
+                    "\n" +
+                    "Garnish with slices of red radish or jigama strips. Serve with your choice of store-bought tortilla chips or make your own homemade tortilla chips.\n" +
+                    "\n" +
+                    "Refrigerate leftover guacamole up to 3 days.\n" +
+                    "\n");
+
+            Notes notes = new Notes();
+            notes.setRecipeNotes("Be careful handling chilis! If using, it's best to wear food-safe gloves. If no gloves are available, wash your hands thoroughly after handling, and do not touch your eyes or the area near your eyes for several hours afterwards.");
+
+            guacamole.setNotes(notes);
 
             Set<Ingredient> ingredients = new HashSet<>();
 
@@ -43,7 +67,6 @@ public class SpringBootCommandLineRunner implements CommandLineRunner {
             avocado.setDescription("ripe avocado");
             avocado.setAmount(BigDecimal.valueOf(2));
             avocado.setRecipe(guacamole);
-            // ingredientRepository.save(avocado);
             System.out.println("-- saved avocado");
             ingredients.add(avocado);
 
