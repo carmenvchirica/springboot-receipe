@@ -61,10 +61,11 @@ public class SpringBootCommandLineRunner implements CommandLineRunner {
                     "Refrigerate leftover guacamole up to 3 days.\n" +
                     "\n");
             System.out.println("--- Creating NOTES... ");
-            Notes notes = new Notes();
-            notes.setRecipeNotes("Be careful handling chilis! If using, it's best to wear food-safe gloves. If no gloves are available, wash your hands thoroughly after handling, and do not touch your eyes or the area near your eyes for several hours afterwards.");
-            guacamole.setNotes(notes);
-            System.out.println("--- Created notes for GUACAMOLE ");
+            Notes guacamoleNotes = new Notes();
+            guacamoleNotes.setRecipeNotes("Be careful handling chilis! If using, it's best to wear food-safe gloves. If no gloves are available, wash your hands thoroughly after handling, and do not touch your eyes or the area near your eyes for several hours afterwards.");
+            guacamole.setNotes(guacamoleNotes);
+            guacamoleNotes.setRecipe(guacamole);
+            System.out.println("--- Created guacamoleNotes for GUACAMOLE ");
 
             System.out.println("--- Creating CATEGORIES... ");
             Set<Category> categories = new HashSet<>();
