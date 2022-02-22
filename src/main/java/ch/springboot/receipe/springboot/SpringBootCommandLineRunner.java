@@ -1,8 +1,10 @@
 package ch.springboot.receipe.springboot;
 
+import ch.springboot.receipe.models.Category;
 import ch.springboot.receipe.models.Ingredient;
 import ch.springboot.receipe.models.Notes;
 import ch.springboot.receipe.models.Recipe;
+import ch.springboot.receipe.repositories.CategoryRepository;
 import ch.springboot.receipe.repositories.RecipeRepository;
 import ch.springboot.receipe.repositories.UnitOfMeasureRepository;
 import ch.springboot.receipe.utils.Difficulty;
@@ -18,10 +20,12 @@ public class SpringBootCommandLineRunner implements CommandLineRunner {
 
     private final RecipeRepository recipeRepository;
     private final UnitOfMeasureRepository unitOfMeasureRepository;
+    private final CategoryRepository categoryRepository;
 
-    public SpringBootCommandLineRunner(RecipeRepository recipeRepository, UnitOfMeasureRepository unitOfMeasureRepository) {
+    public SpringBootCommandLineRunner(RecipeRepository recipeRepository, UnitOfMeasureRepository unitOfMeasureRepository, CategoryRepository categoryRepository) {
         this.recipeRepository = recipeRepository;
         this.unitOfMeasureRepository = unitOfMeasureRepository;
+        this.categoryRepository = categoryRepository;
     }
 
     @Override
@@ -30,6 +34,7 @@ public class SpringBootCommandLineRunner implements CommandLineRunner {
         if(recipeRepository.count() == 0) {
             System.out.println("--- How to Make the Best Guacamole --- ");
 
+            System.out.println("--- Creating recipe... ");
             Recipe guacamole = new Recipe();
             guacamole.setDescription("The best guacamole keeps it simple: just ripe avocados, salt, a squeeze of lime, onions, chilis, cilantro, and some chopped tomato. Serve it as a dip at your next party or spoon it on top of tacos for an easy dinner upgrade.");
             guacamole.setCookTime(10);
@@ -55,12 +60,20 @@ public class SpringBootCommandLineRunner implements CommandLineRunner {
                     "\n" +
                     "Refrigerate leftover guacamole up to 3 days.\n" +
                     "\n");
-
+            System.out.println("--- Creating NOTES... ");
             Notes notes = new Notes();
             notes.setRecipeNotes("Be careful handling chilis! If using, it's best to wear food-safe gloves. If no gloves are available, wash your hands thoroughly after handling, and do not touch your eyes or the area near your eyes for several hours afterwards.");
-
             guacamole.setNotes(notes);
+            System.out.println("--- Created notes for GUACAMOLE ");
 
+            System.out.println("--- Creating CATEGORIES... ");
+            Set<Category> categories = new HashSet<>();
+            Category american =  new Category();
+            categories.add(categoryRepository.findByDescription("American").get());
+            guacamole.setCategories(categories);
+            System.out.println("--- Created category AMERICAN for GUACAMOLE");
+
+            System.out.println("--- Creating ingredients... ");
             Set<Ingredient> ingredients = new HashSet<>();
 
             Ingredient avocado = new Ingredient();
@@ -69,6 +82,7 @@ public class SpringBootCommandLineRunner implements CommandLineRunner {
             avocado.setRecipe(guacamole);
             System.out.println("-- saved avocado");
             ingredients.add(avocado);
+            System.out.println("--- Added ingredient:: " + avocado.getDescription());
 
             Ingredient salt = new Ingredient();
             salt.setDescription("salt, plus more to taste");
@@ -76,6 +90,7 @@ public class SpringBootCommandLineRunner implements CommandLineRunner {
             salt.setAmount(BigDecimal.valueOf(1 / 4));
             salt.setRecipe(guacamole);
             ingredients.add(salt);
+            System.out.println("--- Added ingredient:: " + salt.getDescription());
 
             Ingredient freshLimeOrLemonJuice = new Ingredient();
             freshLimeOrLemonJuice.setDescription("fresh lime or lemon juice");
@@ -83,6 +98,7 @@ public class SpringBootCommandLineRunner implements CommandLineRunner {
             freshLimeOrLemonJuice.setAmount(BigDecimal.valueOf(3));
             freshLimeOrLemonJuice.setRecipe(guacamole);
             ingredients.add(freshLimeOrLemonJuice);
+            System.out.println("--- Added ingredient:: " + freshLimeOrLemonJuice.getDescription());
 
             Ingredient redOnion = new Ingredient();
             redOnion.setDescription("minced red onion or thinly sliced green onion");
@@ -90,12 +106,14 @@ public class SpringBootCommandLineRunner implements CommandLineRunner {
             redOnion.setAmount(BigDecimal.valueOf(2));
             redOnion.setRecipe(guacamole);
             ingredients.add(redOnion);
+            System.out.println("--- Added ingredient:: " + redOnion.getDescription());
 
             Ingredient serranoChillis = new Ingredient();
             serranoChillis.setDescription("serrano (or jalapeño) chilis, stems and seeds removed, minced");
             serranoChillis.setAmount(BigDecimal.valueOf(1));
             serranoChillis.setRecipe(guacamole);
             ingredients.add(serranoChillis);
+            System.out.println("--- Added ingredient:: " + serranoChillis.getDescription());
 
             Ingredient cilantro = new Ingredient();
             cilantro.setDescription("cilantro (leaves and tender stems), finely chopped");
@@ -103,31 +121,38 @@ public class SpringBootCommandLineRunner implements CommandLineRunner {
             cilantro.setAmount(BigDecimal.valueOf(1));
             cilantro.setRecipe(guacamole);
             ingredients.add(cilantro);
+            System.out.println("--- Added ingredient:: " + cilantro.getDescription());
 
             Ingredient blackPepper = new Ingredient();
             blackPepper.setDescription("Pinch freshly ground black pepper");
             blackPepper.setRecipe(guacamole);
             ingredients.add(blackPepper);
+            System.out.println("--- Added ingredient:: " + blackPepper.getDescription());
 
             Ingredient tomato = new Ingredient();
             tomato.setDescription("ripe tomato, chopped (optional)");
             tomato.setAmount(BigDecimal.valueOf(1 / 2));
             tomato.setRecipe(guacamole);
             ingredients.add(tomato);
+            System.out.println("--- Added ingredient:: " + tomato.getDescription());
 
             Ingredient redRadishOrJicama = new Ingredient();
             redRadishOrJicama.setDescription("Red radish or jicama slices for garnish (optional)");
             redRadishOrJicama.setAmount(BigDecimal.valueOf(1 / 2));
             redRadishOrJicama.setRecipe(guacamole);
             ingredients.add(redRadishOrJicama);
+            System.out.println("--- Added ingredient:: " + redRadishOrJicama.getDescription());
 
             Ingredient tortillaChips = new Ingredient();
             tortillaChips.setDescription("Tortilla chips, to serve");
             tortillaChips.setRecipe(guacamole);
             ingredients.add(tortillaChips);
+            System.out.println("--- Added ingredient:: " + tortillaChips.getDescription());
 
             guacamole.setIngredients(ingredients);
+            System.out.println(" ---- Added all these ingredients to recipe");
             recipeRepository.save(guacamole);
+            System.out.println("SAVED RECIPE GUACAMOLE\n=================");
         }
     }
 }

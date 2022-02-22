@@ -27,13 +27,6 @@ public class ReceipeController {
 
     @RequestMapping({"", "/"})
     public String getReceipes(Model model) {
-
-        Optional<Category> categoryOptional = categoryRepository.findByDescription("American");
-        Optional<UnitOfMeasure> UnitOfMeasureOptional = unitOfMeasureRepository.findByDescription("Spoon");
-
-        System.out.println("category: " + categoryOptional.get().getId());
-        System.out.println("unitOfMeasure: " + UnitOfMeasureOptional.get().getId());
-
         model.addAttribute("recipes", recipeRepository.findAll());
         return "/recipes/index";
     }

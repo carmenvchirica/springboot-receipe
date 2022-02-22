@@ -8,13 +8,16 @@
     <h1>List of Recipes</h1>
 
     <div th:each="recipe: ${recipes}">
-        <p th:text="'Description: ' + ${recipe.description} + ' mins'"></p>
-        <p th:text="'PrepTime: ' + ${recipe.prepTime} + ' mins'"></p>
-        <p th:text="'CookTime: ' + ${recipe.cookTime} + ' mins'"></p>
-        <p th:text="'Servings: ' + ${recipe.servings}+ ' servings'"></p>
-        <p th:text="'Source: ' + ${recipe.source}"></p>
-        <a th:href="${recipe.url}" th:text="'URL'"></a>
+        <p th:utext="'&lt;strong&gt;Description:&lt;/strong&gt; ' + ${recipe.description} + ' mins'"></p>
+        <p th:utext="'&lt;strong&gt;PrepTime:&lt;/strong&gt; ' + ${recipe.prepTime} + ' mins'"></p>
+        <p th:utext="'&lt;strong&gt;CookTime:&lt;/strong&gt; ' + ${recipe.cookTime} + ' mins'"></p>
+        <p th:utext="'&lt;strong&gt;Servings:&lt;/strong&gt; ' + ${recipe.servings}+ ' servings'"></p>
+        <p th:utext="'&lt;strong&gt;Difficulty:&lt;/strong&gt; ' + ${recipe.difficulty}"></p>
+        <p th:utext="'&lt;strong&gt;Source:&lt;/strong&gt; ' + ${recipe.source}"></p>
+        <a th:href="${recipe.url}" th:text="'>>> URL Source'"></a>
         <p th:text="${recipe.directions}"></p>
+
+        <p th:utext="'&lt;strong&gt;Notes:&lt;/strong&gt; ' + ${recipe.notes.recipeNotes}"></p>
 
         <h3>List of Ingredients</h3>
 
