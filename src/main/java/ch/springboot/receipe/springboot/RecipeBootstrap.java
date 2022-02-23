@@ -1,7 +1,10 @@
 package ch.springboot.receipe.springboot;
 
 import ch.springboot.receipe.models.*;
+import ch.springboot.receipe.models.inheritrance.Book;
+import ch.springboot.receipe.models.inheritrance.Pen;
 import ch.springboot.receipe.repositories.CategoryRepository;
+import ch.springboot.receipe.repositories.ProductRepository;
 import ch.springboot.receipe.repositories.RecipeRepository;
 import ch.springboot.receipe.repositories.UnitOfMeasureRepository;
 import ch.springboot.receipe.utils.Difficulty;
@@ -18,11 +21,13 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
     private final RecipeRepository recipeRepository;
     private final UnitOfMeasureRepository unitOfMeasureRepository;
     private final CategoryRepository categoryRepository;
+    private final ProductRepository productRepository;
 
-    public RecipeBootstrap(RecipeRepository recipeRepository, UnitOfMeasureRepository unitOfMeasureRepository, CategoryRepository categoryRepository) {
+    public RecipeBootstrap(RecipeRepository recipeRepository, UnitOfMeasureRepository unitOfMeasureRepository, CategoryRepository categoryRepository, ProductRepository productRepository) {
         this.recipeRepository = recipeRepository;
         this.unitOfMeasureRepository = unitOfMeasureRepository;
         this.categoryRepository = categoryRepository;
+        this.productRepository = productRepository;
     }
 
     @Override
@@ -30,6 +35,11 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
         if(recipeRepository.count() == 0) {
             recipeRepository.saveAll(getRecipes());
         }
+
+        if(productRepository.count() == 0) {
+            saveProducts();
+        }
+
     }
 
     private List<Recipe> getRecipes() {
@@ -106,5 +116,22 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
         return recipes;
     }
 
+    private void saveProducts() {
+        Book book = new Book();
+        book.setName("Mindset");
+        book.setAuthor("Carol D.");
+
+        Pen pen = new Pen();
+        pen.setName("Pix");
+        pen.setColor("Red");
+
+        Pen pen2 = new Pen();
+        pen2.setName("Stilo");
+        pen2.setColor("Blue");
+
+        productRepository.save(book);
+        productRepository.save(pen);
+        productRepository.save(pen2);
+    }
 
 }
