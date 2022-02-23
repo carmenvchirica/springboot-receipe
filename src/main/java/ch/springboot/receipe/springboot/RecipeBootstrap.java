@@ -54,10 +54,7 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
         if(vehicleServiceImpl.count() == 0) {
             saveVehicles();
         }
-
     }
-
-
 
     private List<Recipe> getRecipes() {
 
