@@ -62,8 +62,6 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
 
         if(vehicleServiceImpl.count() == 0) {
             saveVehicles();
-        } else {
-
         }
     }
 
@@ -208,7 +206,6 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
         vehicleServiceImpl.save(vehicle);
         vehicleServiceImpl.save(beoing);
         vehicleServiceImpl.save(logan);
-
     }
 
 }
