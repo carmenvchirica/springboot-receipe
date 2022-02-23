@@ -22,7 +22,9 @@
         <h3>List of Ingredients</h3>
 
         <ul th:each="ingredient: ${recipe.ingredients}">
-            <li th:text="${ingredient.amount != null} ? ${#numbers.formatInteger(ingredient.amount,0)} + ' ' + ${ingredient.description} : '' + ${ingredient.description}"></li>
+            <li th:text="${ingredient.amount != null}
+            ? ${#numbers.formatInteger(ingredient.amount,1)} + ' ' + ${ingredient.unitOfMeasure.description} + ' ' + ${ingredient.description}
+            : '' + ${ingredient.description}"></li>
         </ul>
     </div>
 

@@ -1,9 +1,6 @@
 package ch.springboot.receipe.springboot;
 
-import ch.springboot.receipe.models.Category;
-import ch.springboot.receipe.models.Ingredient;
-import ch.springboot.receipe.models.Notes;
-import ch.springboot.receipe.models.Recipe;
+import ch.springboot.receipe.models.*;
 import ch.springboot.receipe.repositories.CategoryRepository;
 import ch.springboot.receipe.repositories.RecipeRepository;
 import ch.springboot.receipe.repositories.UnitOfMeasureRepository;
@@ -13,10 +10,7 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Component
 public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEvent> {
@@ -35,7 +29,6 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
     public void onApplicationEvent(ContextRefreshedEvent event) {
         if(recipeRepository.count() == 0) {
             recipeRepository.saveAll(getRecipes());
-            System.out.println("SAVED RECIPES\n=================");
         }
     }
 
@@ -43,8 +36,6 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
 
         List<Recipe> recipes = new ArrayList<>();
         System.out.println("--- How to Make the Best Guacamole --- ");
-
-        System.out.println("--- Creating recipe... ");
         Recipe guacamole = new Recipe();
         guacamole.setDescription("The best guacamole keeps it simple: just ripe avocados, salt, a squeeze of lime, onions, chilis, cilantro, and some chopped tomato. Serve it as a dip at your next party or spoon it on top of tacos for an easy dinner upgrade.");
         guacamole.setCookTime(10);
@@ -70,98 +61,46 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
                 "\n" +
                 "Refrigerate leftover guacamole up to 3 days.\n" +
                 "\n");
-        System.out.println("--- Creating NOTES... ");
-        Notes guacamoleNotes = new Notes();
-        guacamoleNotes.setRecipeNotes("Be careful handling chilis! If using, it's best to wear food-safe gloves. If no gloves are available, wash your hands thoroughly after handling, and do not touch your eyes or the area near your eyes for several hours afterwards.");
-        guacamole.setNotes(guacamoleNotes);
-        guacamoleNotes.setRecipe(guacamole);
-        System.out.println("--- Created guacamoleNotes for GUACAMOLE ");
 
-        System.out.println("--- Creating CATEGORIES... ");
-        Set<Category> categories = new HashSet<>();
-        Category american =  new Category();
-        categories.add(categoryRepository.findByDescription("American").get());
-        guacamole.setCategories(categories);
-        System.out.println("--- Created category AMERICAN for GUACAMOLE");
+        guacamole.setNotes(new Notes("Be careful handling chilis! If using, it's best to wear food-safe gloves. If no gloves are available, " +
+                "wash your hands thoroughly after handling, and do not touch your eyes or the area near your eyes for several hours afterwards."));
 
-        System.out.println("--- Creating ingredients... ");
-        Set<Ingredient> ingredients = new HashSet<>();
+        try {
+            Category americanCategory = categoryRepository.findByDescription("American").get();
+            guacamole.addCategory(americanCategory);
+        } catch (NoSuchElementException ex) {
+            throw new NoSuchElementException("Can not found Category: American");
+        }
 
-        Ingredient avocado = new Ingredient();
-        avocado.setDescription("ripe avocado");
-        avocado.setAmount(BigDecimal.valueOf(2));
-        avocado.setRecipe(guacamole);
-        System.out.println("-- saved avocado");
-        ingredients.add(avocado);
-        System.out.println("--- Added ingredient:: " + avocado.getDescription());
+        UnitOfMeasure eachUom = null;
+        try {
+            eachUom = unitOfMeasureRepository.findByDescription("EachUom").get();
+        } catch (NoSuchElementException ex) {
+            throw new NoSuchElementException("Can not found Unit Of Measure: EachUom");
+        }
+        UnitOfMeasure teaspoon = null;
+        try {
+            teaspoon = unitOfMeasureRepository.findByDescription("Teaspoon").get();
+        } catch (NoSuchElementException ex) {
+            throw new NoSuchElementException("Can not found Unit Of Measure: Teaspoon");
+        }
+        UnitOfMeasure tablespoon = null;
+        try {
+            tablespoon = unitOfMeasureRepository.findByDescription("Tablespoon").get();
+        } catch (NoSuchElementException ex) {
+            throw new NoSuchElementException("Can not found Unit Of Measure: Tablespoon");
+        }
 
-        Ingredient salt = new Ingredient();
-        salt.setDescription("salt, plus more to taste");
-        salt.setUnitOfMeasure(unitOfMeasureRepository.findByDescription("Teaspoon").get());
-        salt.setAmount(BigDecimal.valueOf(1 / 4));
-        salt.setRecipe(guacamole);
-        ingredients.add(salt);
-        System.out.println("--- Added ingredient:: " + salt.getDescription());
-
-        Ingredient freshLimeOrLemonJuice = new Ingredient();
-        freshLimeOrLemonJuice.setDescription("fresh lime or lemon juice");
-        freshLimeOrLemonJuice.setUnitOfMeasure(unitOfMeasureRepository.findByDescription("Tablespoon").get());
-        freshLimeOrLemonJuice.setAmount(BigDecimal.valueOf(3));
-        freshLimeOrLemonJuice.setRecipe(guacamole);
-        ingredients.add(freshLimeOrLemonJuice);
-        System.out.println("--- Added ingredient:: " + freshLimeOrLemonJuice.getDescription());
-
-        Ingredient redOnion = new Ingredient();
-        redOnion.setDescription("minced red onion or thinly sliced green onion");
-        redOnion.setUnitOfMeasure(unitOfMeasureRepository.findByDescription("Tablespoon").get());
-        redOnion.setAmount(BigDecimal.valueOf(2));
-        redOnion.setRecipe(guacamole);
-        ingredients.add(redOnion);
-        System.out.println("--- Added ingredient:: " + redOnion.getDescription());
-
-        Ingredient serranoChillis = new Ingredient();
-        serranoChillis.setDescription("serrano (or jalapeño) chilis, stems and seeds removed, minced");
-        serranoChillis.setAmount(BigDecimal.valueOf(1));
-        serranoChillis.setRecipe(guacamole);
-        ingredients.add(serranoChillis);
-        System.out.println("--- Added ingredient:: " + serranoChillis.getDescription());
-
-        Ingredient cilantro = new Ingredient();
-        cilantro.setDescription("cilantro (leaves and tender stems), finely chopped");
-        cilantro.setUnitOfMeasure(unitOfMeasureRepository.findByDescription("Tablespoon").get());
-        cilantro.setAmount(BigDecimal.valueOf(1));
-        cilantro.setRecipe(guacamole);
-        ingredients.add(cilantro);
-        System.out.println("--- Added ingredient:: " + cilantro.getDescription());
-
-        Ingredient blackPepper = new Ingredient();
-        blackPepper.setDescription("Pinch freshly ground black pepper");
-        blackPepper.setRecipe(guacamole);
-        ingredients.add(blackPepper);
-        System.out.println("--- Added ingredient:: " + blackPepper.getDescription());
-
-        Ingredient tomato = new Ingredient();
-        tomato.setDescription("ripe tomato, chopped (optional)");
-        tomato.setAmount(BigDecimal.valueOf(1 / 2));
-        tomato.setRecipe(guacamole);
-        ingredients.add(tomato);
-        System.out.println("--- Added ingredient:: " + tomato.getDescription());
-
-        Ingredient redRadishOrJicama = new Ingredient();
-        redRadishOrJicama.setDescription("Red radish or jicama slices for garnish (optional)");
-        redRadishOrJicama.setAmount(BigDecimal.valueOf(1 / 2));
-        redRadishOrJicama.setRecipe(guacamole);
-        ingredients.add(redRadishOrJicama);
-        System.out.println("--- Added ingredient:: " + redRadishOrJicama.getDescription());
-
-        Ingredient tortillaChips = new Ingredient();
-        tortillaChips.setDescription("Tortilla chips, to serve");
-        tortillaChips.setRecipe(guacamole);
-        ingredients.add(tortillaChips);
-        System.out.println("--- Added ingredient:: " + tortillaChips.getDescription());
-
-        guacamole.setIngredients(ingredients);
-        System.out.println(" ---- Added all these ingredients to recipe");
+        guacamole.addIngredient(new Ingredient("ripe avocado", BigDecimal.valueOf(2), eachUom));
+        guacamole.addIngredient(new Ingredient("salt, plus more to taste", BigDecimal.valueOf(1 / 4), teaspoon));
+        guacamole.addIngredient(new Ingredient("fresh lime or lemon juice", BigDecimal.valueOf(3), tablespoon));
+        guacamole.addIngredient(new Ingredient("minced red onion or thinly sliced green onion", BigDecimal.valueOf(2), tablespoon));
+        guacamole.addIngredient(new Ingredient("serrano (or jalapeño) chilis, stems and seeds removed, minced", BigDecimal.valueOf(1), eachUom));
+        guacamole.addIngredient(new Ingredient("cilantro (leaves and tender stems), finely chopped", BigDecimal.valueOf(1), eachUom));
+        guacamole.addIngredient(new Ingredient("Pinch freshly ground black pepper", BigDecimal.valueOf(1), eachUom));
+        guacamole.addIngredient(new Ingredient("ripe tomato, chopped (optional)", BigDecimal.valueOf(1/2), eachUom));
+        guacamole.addIngredient(new Ingredient("Red radish or jicama slices for garnish (optional)", BigDecimal.valueOf(1/2), eachUom));
+        guacamole.addIngredient(new Ingredient("Tortilla chips, to serve", BigDecimal.valueOf(1), eachUom));
 
         recipes.add(guacamole);
         return recipes;
