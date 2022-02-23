@@ -1,4 +1,4 @@
-package ch.springboot.receipe.models;
+package ch.springboot.receipe.models.embedded;
 
 import javax.persistence.Embeddable;
 
