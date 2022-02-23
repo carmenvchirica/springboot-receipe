@@ -1,5 +1,6 @@
 package ch.springboot.receipe.models.inheritance;
 
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
@@ -7,6 +8,7 @@ import javax.persistence.MappedSuperclass;
 public class Person {
 
     @Id
+    @GeneratedValue
     private Long personId;
     private String name;
 

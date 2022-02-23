@@ -4,6 +4,7 @@ import ch.springboot.receipe.models.*;
 import ch.springboot.receipe.models.inheritance.*;
 import ch.springboot.receipe.repositories.*;
 import ch.springboot.receipe.repositories.inheritance.AnimalRepository;
+import ch.springboot.receipe.repositories.inheritance.EmployeeRepository;
 import ch.springboot.receipe.repositories.inheritance.ProductRepository;
 import ch.springboot.receipe.services.inheritance.VehicleServiceImpl;
 import ch.springboot.receipe.utils.Difficulty;
@@ -11,6 +12,7 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 
+import javax.persistence.EntityManagerFactory;
 import java.math.BigDecimal;
 import java.util.*;
 
@@ -20,27 +22,34 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
     private final RecipeRepository recipeRepository;
     private final UnitOfMeasureRepository unitOfMeasureRepository;
     private final CategoryRepository categoryRepository;
+    private final EmployeeRepository employeeRepository;
     private final ProductRepository productRepository;
     private final AnimalRepository animalRepository;
     private final VehicleServiceImpl vehicleServiceImpl;
 
-    public RecipeBootstrap(RecipeRepository recipeRepository,
-                           UnitOfMeasureRepository unitOfMeasureRepository,
-                           CategoryRepository categoryRepository,
-                           ProductRepository productRepository,
-                           AnimalRepository animalRepository, VehicleServiceImpl vehicleServiceImpl) {
+    private final EntityManagerFactory factory;
+
+    public RecipeBootstrap(RecipeRepository recipeRepository, UnitOfMeasureRepository unitOfMeasureRepository,
+                           CategoryRepository categoryRepository, EmployeeRepository employeeRepository, ProductRepository productRepository,
+                           AnimalRepository animalRepository, VehicleServiceImpl vehicleServiceImpl, EntityManagerFactory factory) {
         this.recipeRepository = recipeRepository;
         this.unitOfMeasureRepository = unitOfMeasureRepository;
         this.categoryRepository = categoryRepository;
+        this.employeeRepository = employeeRepository;
         this.productRepository = productRepository;
         this.animalRepository = animalRepository;
         this.vehicleServiceImpl = vehicleServiceImpl;
+        this.factory = factory;
     }
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
         if(recipeRepository.count() == 0) {
             recipeRepository.saveAll(getRecipes());
+        }
+
+        if(employeeRepository.count() == 0) {
+            savePersons();
         }
 
         if(productRepository.count() == 0) {
@@ -53,6 +62,8 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
 
         if(vehicleServiceImpl.count() == 0) {
             saveVehicles();
+        } else {
+
         }
     }
 
@@ -128,6 +139,23 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
 
         recipes.add(guacamole);
         return recipes;
+    }
+
+    private void savePersons() {
+        Employee mariana = new Employee();
+        mariana.setName("Mariana Popescu");
+
+        Employee gina = new Employee();
+        gina.setName("Gina Georgescu");
+        gina.setCompany("GSS");
+
+        Employee adina = new Employee();
+        adina.setName("Adina Moraru");
+        adina.setCompany("UiPath");
+
+        employeeRepository.save(mariana);
+        employeeRepository.save(gina);
+        employeeRepository.save(adina);
     }
 
     private void saveProducts() {
