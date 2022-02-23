@@ -1,12 +1,11 @@
 package ch.springboot.receipe.springboot;
 
 import ch.springboot.receipe.models.*;
+import ch.springboot.receipe.models.inheritrance.Animal;
 import ch.springboot.receipe.models.inheritrance.Book;
 import ch.springboot.receipe.models.inheritrance.Pen;
-import ch.springboot.receipe.repositories.CategoryRepository;
-import ch.springboot.receipe.repositories.ProductRepository;
-import ch.springboot.receipe.repositories.RecipeRepository;
-import ch.springboot.receipe.repositories.UnitOfMeasureRepository;
+import ch.springboot.receipe.models.inheritrance.Pet;
+import ch.springboot.receipe.repositories.*;
 import ch.springboot.receipe.utils.Difficulty;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -22,12 +21,18 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
     private final UnitOfMeasureRepository unitOfMeasureRepository;
     private final CategoryRepository categoryRepository;
     private final ProductRepository productRepository;
+    private final AnimalRepository animalRepository;
 
-    public RecipeBootstrap(RecipeRepository recipeRepository, UnitOfMeasureRepository unitOfMeasureRepository, CategoryRepository categoryRepository, ProductRepository productRepository) {
+    public RecipeBootstrap(RecipeRepository recipeRepository,
+                           UnitOfMeasureRepository unitOfMeasureRepository,
+                           CategoryRepository categoryRepository,
+                           ProductRepository productRepository,
+                           AnimalRepository animalRepository) {
         this.recipeRepository = recipeRepository;
         this.unitOfMeasureRepository = unitOfMeasureRepository;
         this.categoryRepository = categoryRepository;
         this.productRepository = productRepository;
+        this.animalRepository = animalRepository;
     }
 
     @Override
@@ -40,7 +45,13 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
             saveProducts();
         }
 
+        if(animalRepository.count() == 0) {
+            saveAnimals();
+        }
+
     }
+
+
 
     private List<Recipe> getRecipes() {
 
@@ -132,6 +143,18 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
         productRepository.save(book);
         productRepository.save(pen);
         productRepository.save(pen2);
+    }
+
+    private void saveAnimals() {
+        Animal animal = new Animal();
+        animal.setSpecies("Amur Leopard");
+
+        Pet pet = new Pet();
+        pet.setName("Dummy");
+        pet.setSpecies("Dog");
+
+        animalRepository.save(animal);
+        animalRepository.save(pet);
     }
 
 }
