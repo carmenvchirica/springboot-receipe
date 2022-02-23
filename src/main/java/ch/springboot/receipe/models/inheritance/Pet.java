@@ -1,4 +1,4 @@
-package ch.springboot.receipe.models.inheritrance;
+package ch.springboot.receipe.models.inheritance;
 
 import javax.persistence.Entity;
 import javax.persistence.PrimaryKeyJoinColumn;

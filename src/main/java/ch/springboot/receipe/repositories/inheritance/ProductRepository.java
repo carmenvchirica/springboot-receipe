@@ -1,6 +1,6 @@
-package ch.springboot.receipe.repositories;
+package ch.springboot.receipe.repositories.inheritance;
 
-import ch.springboot.receipe.models.inheritrance.Product;
+import ch.springboot.receipe.models.inheritance.Product;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

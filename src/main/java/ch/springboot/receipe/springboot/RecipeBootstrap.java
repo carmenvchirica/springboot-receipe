@@ -1,11 +1,11 @@
 package ch.springboot.receipe.springboot;
 
 import ch.springboot.receipe.models.*;
-import ch.springboot.receipe.models.inheritrance.Animal;
-import ch.springboot.receipe.models.inheritrance.Book;
-import ch.springboot.receipe.models.inheritrance.Pen;
-import ch.springboot.receipe.models.inheritrance.Pet;
+import ch.springboot.receipe.models.inheritance.*;
 import ch.springboot.receipe.repositories.*;
+import ch.springboot.receipe.repositories.inheritance.AnimalRepository;
+import ch.springboot.receipe.repositories.inheritance.ProductRepository;
+import ch.springboot.receipe.services.inheritance.VehicleServiceImpl;
 import ch.springboot.receipe.utils.Difficulty;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -22,17 +22,19 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
     private final CategoryRepository categoryRepository;
     private final ProductRepository productRepository;
     private final AnimalRepository animalRepository;
+    private final VehicleServiceImpl vehicleServiceImpl;
 
     public RecipeBootstrap(RecipeRepository recipeRepository,
                            UnitOfMeasureRepository unitOfMeasureRepository,
                            CategoryRepository categoryRepository,
                            ProductRepository productRepository,
-                           AnimalRepository animalRepository) {
+                           AnimalRepository animalRepository, VehicleServiceImpl vehicleServiceImpl) {
         this.recipeRepository = recipeRepository;
         this.unitOfMeasureRepository = unitOfMeasureRepository;
         this.categoryRepository = categoryRepository;
         this.productRepository = productRepository;
         this.animalRepository = animalRepository;
+        this.vehicleServiceImpl = vehicleServiceImpl;
     }
 
     @Override
@@ -47,6 +49,10 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
 
         if(animalRepository.count() == 0) {
             saveAnimals();
+        }
+
+        if(vehicleServiceImpl.count() == 0) {
+            saveVehicles();
         }
 
     }
@@ -155,6 +161,29 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
 
         animalRepository.save(animal);
         animalRepository.save(pet);
+    }
+
+    private void saveVehicles() {
+        Vehicle vehicle = new Vehicle();
+        vehicle.setManufacturer("vehicle manufacturer");
+
+        Plane beoing = new Plane();
+        beoing.setPropellerSize(BigDecimal.valueOf(25.42));
+        beoing.setManufacturer("beoing manufacturer");
+
+        beoing.isFlying();
+        beoing.isMoving();
+
+        Car logan = new Car();
+        logan.setManufacturer("logan manufacturer");
+        logan.setDoorsNo(4);
+
+        logan.isMoving();
+
+        vehicleServiceImpl.save(vehicle);
+        vehicleServiceImpl.save(beoing);
+        vehicleServiceImpl.save(logan);
+
     }
 
 }
