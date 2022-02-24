@@ -1,8 +1,15 @@
 package ch.springboot.receipe.models;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 
+@Data
 @Entity
+@NoArgsConstructor
+@EqualsAndHashCode(exclude = {"recipe"})
 public class Notes {
 
     @Id
@@ -15,18 +22,7 @@ public class Notes {
     @Lob
     private String recipeNotes;
 
-    public Notes() {
-    }
-
     public Notes(String recipeNotes) {
         this.recipeNotes = recipeNotes;
-    }
-
-    public void setRecipe(Recipe recipe) {
-        this.recipe = recipe;
-    }
-
-    public String getRecipeNotes() {
-        return recipeNotes;
     }
 }

@@ -8,14 +8,16 @@ import ch.springboot.receipe.repositories.inheritance.EmployeeRepository;
 import ch.springboot.receipe.repositories.inheritance.ProductRepository;
 import ch.springboot.receipe.services.inheritance.VehicleServiceImpl;
 import ch.springboot.receipe.utils.Difficulty;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 
-import javax.persistence.EntityManagerFactory;
+import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.util.*;
 
+@Slf4j
 @Component
 public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEvent> {
 
@@ -27,11 +29,9 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
     private final AnimalRepository animalRepository;
     private final VehicleServiceImpl vehicleServiceImpl;
 
-    private final EntityManagerFactory factory;
-
     public RecipeBootstrap(RecipeRepository recipeRepository, UnitOfMeasureRepository unitOfMeasureRepository,
                            CategoryRepository categoryRepository, EmployeeRepository employeeRepository, ProductRepository productRepository,
-                           AnimalRepository animalRepository, VehicleServiceImpl vehicleServiceImpl, EntityManagerFactory factory) {
+                           AnimalRepository animalRepository, VehicleServiceImpl vehicleServiceImpl) {
         this.recipeRepository = recipeRepository;
         this.unitOfMeasureRepository = unitOfMeasureRepository;
         this.categoryRepository = categoryRepository;
@@ -39,10 +39,10 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
         this.productRepository = productRepository;
         this.animalRepository = animalRepository;
         this.vehicleServiceImpl = vehicleServiceImpl;
-        this.factory = factory;
     }
 
     @Override
+    @Transactional
     public void onApplicationEvent(ContextRefreshedEvent event) {
         if(recipeRepository.count() == 0) {
             recipeRepository.saveAll(getRecipes());

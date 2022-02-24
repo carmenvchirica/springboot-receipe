@@ -1,8 +1,15 @@
 package ch.springboot.receipe.models;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 
+@Data
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
 public class UnitOfMeasure {
 
     @Id
@@ -10,11 +17,4 @@ public class UnitOfMeasure {
     private Long id;
     private String description;
 
-    public Long getId() {
-        return id;
-    }
-
-    public String getDescription() {
-        return description;
-    }
 }
