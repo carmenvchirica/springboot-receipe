@@ -1,6 +1,5 @@
 package ch.springboot.receipe.models;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;

@@ -8,16 +8,13 @@ import ch.springboot.receipe.repositories.inheritance.EmployeeRepository;
 import ch.springboot.receipe.repositories.inheritance.ProductRepository;
 import ch.springboot.receipe.services.inheritance.VehicleServiceImpl;
 import ch.springboot.receipe.utils.Difficulty;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 
-import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.util.*;
 
-@Slf4j
 @Component
 public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEvent> {
 
@@ -42,9 +39,8 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
     }
 
     @Override
-    @Transactional
     public void onApplicationEvent(ContextRefreshedEvent event) {
-        if(recipeRepository.count() == 0) {
+        if(recipeRepository != null && recipeRepository.count() == 0) {
             recipeRepository.saveAll(getRecipes());
         }
 

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Slf4j
 @Controller
-@RequestMapping("/receipes")
+@RequestMapping("/recipes")
 public class ReceipeController {
 
     private final RecipeService recipeService;
