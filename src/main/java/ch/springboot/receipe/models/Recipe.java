@@ -1,6 +1,5 @@
 package ch.springboot.receipe.models;
 
-
 import ch.springboot.receipe.utils.Difficulty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -43,7 +42,7 @@ public class Recipe {
     @Lob
     private Byte[] image;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Notes notes;
 
     public void setNotes(Notes notes) {
