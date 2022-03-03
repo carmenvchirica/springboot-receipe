@@ -12,17 +12,24 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Slf4j
 @Controller
 @RequestMapping("/recipes")
-public class ReceipeController {
+public class RecipeController {
 
     private final RecipeService recipeService;
 
-    public ReceipeController(RecipeService recipeService) {
+    public RecipeController(RecipeService recipeService) {
         this.recipeService = recipeService;
     }
 
-    @RequestMapping({"", "/"})
-    public String getReceipes(Model model) {
+    @RequestMapping({"", "/", "/index"})
+    public String getIndexPage(Model model) {
+        log.info("Getting Recipe Controller!!");
         model.addAttribute("recipes", recipeService.getRecipies());
         return "/recipes/index";
+    }
+
+    @RequestMapping("/details")
+    public String getDetails(Model model) {
+        model.addAttribute("recipes", recipeService.getRecipies());
+        return "/recipes/details";
     }
 }
