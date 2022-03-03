@@ -27,26 +27,14 @@ public class UnitOfMeasureRepositoryIT {
     }
 
     @Test
-    public void findByDescriptionTeaspoon() throws Exception {
-        String unitOfMeasureDescription = UnitOfMeasureEnum.TEASPOON.getName();
-        boolean isPresent = unitOfMeasureRepository.findByDescription(unitOfMeasureDescription).isPresent();
-        if(isPresent) {
-            Optional<UnitOfMeasure> unitOfMeasureOptional = unitOfMeasureRepository.findByDescription(unitOfMeasureDescription);
-            assertEquals(unitOfMeasureDescription, unitOfMeasureOptional.get().getDescription());
-        } else {
-            throw new Exception("No unit of measure present: " +  unitOfMeasureDescription);
-        }
+    public void findByDescriptionTeaspoon() {
+        Optional<UnitOfMeasure> unitOfMeasureOptional = unitOfMeasureRepository.findByDescription(UnitOfMeasureEnum.TEASPOON.getName());
+        assertEquals(UnitOfMeasureEnum.TEASPOON.getName(), unitOfMeasureOptional.get().getDescription());
     }
 
     @Test
-    public void findByDescriptionCup() throws Exception {
-        String unitOfMeasureDescription = UnitOfMeasureEnum.CUP.getName();
-        boolean isPresent = unitOfMeasureRepository.findByDescription(unitOfMeasureDescription).isPresent();
-        if(isPresent) {
-            Optional<UnitOfMeasure> unitOfMeasureOptional = unitOfMeasureRepository.findByDescription(unitOfMeasureDescription);
-            assertEquals(unitOfMeasureDescription, unitOfMeasureOptional.get().getDescription());
-        } else {
-            throw new Exception("No unit of measure present: " +  unitOfMeasureDescription);
-        }
+    public void findByDescriptionCup() {
+        Optional<UnitOfMeasure> unitOfMeasureOptional = unitOfMeasureRepository.findByDescription(UnitOfMeasureEnum.CUP.getName());
+        assertEquals(UnitOfMeasureEnum.CUP.getName(), unitOfMeasureOptional.get().getDescription());
     }
 }
