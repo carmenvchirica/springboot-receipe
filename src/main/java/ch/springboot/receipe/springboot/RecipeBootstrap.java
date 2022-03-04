@@ -66,11 +66,12 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
         List<Recipe> recipes = new ArrayList<>();
         System.out.println("--- How to Make the Best Guacamole --- ");
         Recipe guacamole = new Recipe();
+        guacamole.setName("Guacamole");
         guacamole.setDescription("The best guacamole keeps it simple: just ripe avocados, salt, a squeeze of lime, onions, chilis, cilantro, and some chopped tomato. Serve it as a dip at your next party or spoon it on top of tacos for an easy dinner upgrade.");
         guacamole.setCookTime(10);
         guacamole.setServings(4);
         guacamole.setPrepTime(10);
-        guacamole.setSource("https://www.simplyrecipes.com/");
+        guacamole.setSource("www.simplyrecipes.com");
         guacamole.setUrl("https://www.simplyrecipes.com/recipes/perfect_guacamole/");
         guacamole.setDifficulty(Difficulty.EASY);
         guacamole.setDirections("1. Cut the avocado:\n" +

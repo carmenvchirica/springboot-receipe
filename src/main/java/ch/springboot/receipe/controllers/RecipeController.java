@@ -1,22 +1,27 @@
 package ch.springboot.receipe.controllers;
 
+import ch.springboot.receipe.models.Recipe;
 import ch.springboot.receipe.repositories.CategoryRepository;
 import ch.springboot.receipe.repositories.RecipeRepository;
 import ch.springboot.receipe.repositories.UnitOfMeasureRepository;
 import ch.springboot.receipe.services.RecipeService;
+import ch.springboot.receipe.services.RecipeServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Slf4j
 @Controller
 @RequestMapping("/recipes")
 public class RecipeController {
 
-    private final RecipeService recipeService;
+    private final RecipeServiceImpl recipeService;
 
-    public RecipeController(RecipeService recipeService) {
+    public RecipeController(RecipeServiceImpl recipeService) {
         this.recipeService = recipeService;
     }
 
@@ -30,6 +35,17 @@ public class RecipeController {
     @RequestMapping("/details")
     public String getDetails(Model model) {
         model.addAttribute("recipes", recipeService.getRecipies());
+        return "/recipes/details";
+    }
+
+    @GetMapping("/get/{id}")
+    public String getRecipeById(Model model, @PathVariable Long id) {
+        log.info("--- GET recipe by ID: " + id);
+
+        Recipe recipe = recipeService.getRecipeById(id);
+        log.info("Recipe with ID: " + recipe.getId());
+
+        model.addAttribute("recipe", recipe);
         return "/recipes/details";
     }
 }

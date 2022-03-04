@@ -2,6 +2,7 @@ package ch.springboot.receipe.controllers;
 
 import ch.springboot.receipe.models.Recipe;
 import ch.springboot.receipe.services.RecipeService;
+import ch.springboot.receipe.services.RecipeServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -23,7 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 class RecipeControllerTest {
     @Mock
-    RecipeService recipeService;
+    RecipeServiceImpl recipeService;
 
     @Mock
     Model model;
