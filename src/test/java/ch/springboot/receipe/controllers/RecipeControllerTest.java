@@ -44,7 +44,6 @@ class RecipeControllerTest {
         mockMvc.perform(get("/recipes"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("/recipes/index"));
-
     }
 
     @Test
@@ -76,5 +75,20 @@ class RecipeControllerTest {
         Set<Recipe> setInController = argumentCaptor.getValue();
         assertEquals(2, setInController.size());
 
+    }
+
+    @Test
+    public void testGetRecipeById() throws Exception {
+
+        Recipe recipe = new Recipe();
+        recipe.setId(1L);
+
+        MockMvc mockMvc = MockMvcBuilders.standaloneSetup(recipeController).build();
+
+        when(recipeService.getRecipeById(anyLong())).thenReturn(recipe);
+
+        mockMvc.perform(get("/recipes/get/1"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("/recipes/details"));
     }
 }

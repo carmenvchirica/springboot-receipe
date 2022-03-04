@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.Optional;
+
 @Slf4j
 @Controller
 @RequestMapping("/recipes")
@@ -39,10 +41,15 @@ public class RecipeController {
     }
 
     @GetMapping("/get/{id}")
-    public String getRecipeById(Model model, @PathVariable Long id) {
+    public String getRecipeById(Model model, @PathVariable Long id) throws Exception {
         log.info("--- GET recipe by ID: " + id);
 
-        Recipe recipe = recipeService.getRecipeById(id);
+        Optional<Recipe> recipeOptional = Optional.ofNullable(recipeService.getRecipeById(id));
+        if(!recipeOptional.isPresent()) {
+            throw new Exception("IS NOT FOUND");
+        }
+
+        Recipe recipe = recipeOptional.get();
         log.info("Recipe with ID: " + recipe.getId());
 
         model.addAttribute("recipe", recipe);
