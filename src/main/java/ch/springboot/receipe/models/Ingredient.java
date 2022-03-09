@@ -1,13 +1,12 @@
 package ch.springboot.receipe.models;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 
-@Data
+@Setter
+@Getter
 @Entity
 @NoArgsConstructor
 @EqualsAndHashCode(exclude = {"recipe"})

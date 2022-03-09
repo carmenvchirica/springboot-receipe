@@ -1,6 +1,8 @@
 package ch.springboot.receipe.controllers;
 
 import ch.springboot.receipe.commands.IngredientCommand;
+import ch.springboot.receipe.commands.RecipeCommand;
+import ch.springboot.receipe.commands.UnitOfMeasureCommand;
 import ch.springboot.receipe.services.IngredientService;
 import ch.springboot.receipe.services.RecipeService;
 import ch.springboot.receipe.services.UnitOfMeasureService;
@@ -19,6 +21,20 @@ public class IngredientController {
         this.ingredientService = ingredientService;
         this.recipeService = recipeService;
         this.unitOfMeasureService = unitOfMeasureService;
+    }
+
+    @GetMapping("/recipe/{recipeId}/ingredient/new")
+    public String newIngredient(@PathVariable Long recipeId, Model model) {
+        RecipeCommand recipeCommand = recipeService.findCommandById(Long.valueOf(recipeId));
+        // todo raise exception if null
+
+        IngredientCommand ingredientCommand = new IngredientCommand();
+        ingredientCommand.setRecipeId(Long.valueOf(recipeId));
+        ingredientCommand.setUom(new UnitOfMeasureCommand());
+
+        model.addAttribute("ingredient", ingredientCommand);
+        model.addAttribute("uomList", unitOfMeasureService.listAllUoms());
+        return "/recipes/ingredient/ingredientForm";
     }
 
     @GetMapping

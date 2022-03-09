@@ -1,11 +1,14 @@
 package ch.springboot.receipe.models;
 
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 
-@Data
+@Setter
+@Getter
 @Entity
 @NoArgsConstructor
 public class UnitOfMeasure {
