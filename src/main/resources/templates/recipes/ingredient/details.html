@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" >
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
+          integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7"
+          crossorigin="anonymous" th:href="@{https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css}">
+
+    <script src="/webjars/jquery/2.2.4/jquery.min.js" th:src="@{/webjars/jquery/2.2.4/jquery.min.js}"></script>
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
+            integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
+            crossorigin="anonymous" th:src="@{https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js}"></script>
+
+    <title>Ingredient</title>
+</head>
+<body>
+    <div class="container-fluid" style="margin-top: 20px">
+        <div class="row" style="align-items:center;display:flex;">
+            <div class="col-md-10 col-md-offset-1">
+                <div class="pannel-group">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <h1 class="panel-title"><strong>Ingredient</strong></h1>
+                        </div>
+
+                        <div class="panel-body">
+                            <div class="table-responsive" th:if="${not #lists.isEmpty(ingredient)}">
+                                <table class="table table-hover ">
+                                    <thead class="thead-inverse">
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Description</th>
+                                    </tr>
+                                    </thead>
+
+                                    <tr style="cursor: pointer">
+                                        <td th:text="${ingredient.id}">334</td>
+                                        <td th:text="${ingredient.amount} + ' ' + ${ingredient.uom.description} + ' ' + ${ingredient.description}">Tasty Goodnees 3</td>
+                                    </tr>
+
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

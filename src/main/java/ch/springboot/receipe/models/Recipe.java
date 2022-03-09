@@ -44,6 +44,7 @@ public class Recipe {
     private Byte[] image;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "notes_id", referencedColumnName = "id")
     private Notes notes;
 
     public void setNotes(Notes notes) {
