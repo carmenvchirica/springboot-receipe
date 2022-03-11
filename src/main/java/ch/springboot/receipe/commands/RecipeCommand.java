@@ -1,6 +1,6 @@
 package ch.springboot.receipe.commands;
 
-import ch.springboot.receipe.utils.Difficulty;
+import ch.springboot.receipe.enums.Difficulty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -25,4 +25,5 @@ public class RecipeCommand {
     private Difficulty difficulty;
     private NotesCommand notes;
     private Set<CategoryCommand> categories = new HashSet<>();
+    private Byte[] image;
 }

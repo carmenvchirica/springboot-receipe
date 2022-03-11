@@ -23,16 +23,30 @@
                 <div class="pannel-group">
                     <div class="panel panel-primary">
                         <div class="panel-heading">
-                            <h1 class="panel-title" th:text="${recipe.name}"></h1>
+                            <div class="row">
+                                <h1 class="panel-title" th:text="${recipe.name}"></h1>
+                                <div class="col-md-12 form-group" style="text-align:right; padding-right:5px;">
+                                    <a th:href="@{'/recipe/' + ${recipe.id} + '/image'}" class="btn btn-default" role="button">Change image</a>
+                                </div>
+                            </div>
                         </div>
                         <div class="panel-body">
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <img src="../../static/images/guac.jpeg" th:src="@{'/recipe/' + ${recipe.id} + '/recipeimage'}"
+                                         width="200" height="200">
+                                </div>
+                            </div>
+
                             <div class="row">
                                 <div class="col-md-3">
                                     <h5><strong>Description:</strong></h5>
                                 </div>
-                                <div class="col-md-9">
+                                <div class="col-md-6">
                                     <p  th:text="${recipe.description}"></p>
                                 </div>
+
                             </div>
 
                             <div class="row">
@@ -56,7 +70,7 @@
                                     <h5><strong>Difficulty:</strong></h5>
                                 </div>
                                 <div class="col-md-3">
-                                    <p>Easy</p>
+                                    <p th:utext="${recipe.difficulty.getName()}">Easy</p>
                                 </div>
                             </div>
                             <div class="row">

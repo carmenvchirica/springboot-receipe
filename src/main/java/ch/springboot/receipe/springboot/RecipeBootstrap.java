@@ -7,7 +7,7 @@ import ch.springboot.receipe.repositories.inheritance.AnimalRepository;
 import ch.springboot.receipe.repositories.inheritance.EmployeeRepository;
 import ch.springboot.receipe.repositories.inheritance.ProductRepository;
 import ch.springboot.receipe.services.inheritance.VehicleServiceImpl;
-import ch.springboot.receipe.utils.Difficulty;
+import ch.springboot.receipe.enums.Difficulty;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;

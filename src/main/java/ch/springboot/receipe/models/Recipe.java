@@ -1,7 +1,6 @@
 package ch.springboot.receipe.models;
 
-import ch.springboot.receipe.utils.Difficulty;
-import lombok.Data;
+import ch.springboot.receipe.enums.Difficulty;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
