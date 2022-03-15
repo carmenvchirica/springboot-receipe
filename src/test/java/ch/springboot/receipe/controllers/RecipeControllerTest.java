@@ -1,6 +1,7 @@
 package ch.springboot.receipe.controllers;
 
 import ch.springboot.receipe.commands.RecipeCommand;
+import ch.springboot.receipe.exceptions.NotFoundException;
 import ch.springboot.receipe.models.Recipe;
 import ch.springboot.receipe.services.RecipeService;
 import ch.springboot.receipe.services.RecipeServiceImpl;
@@ -106,6 +107,16 @@ class RecipeControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("/recipes/details"))
                 .andExpect(model().attributeExists("recipe"));
+    }
+
+
+    @Test
+    public void testGetRecipeNotFound() throws Exception {
+
+        when(recipeService.findById(anyLong())).thenThrow(NotFoundException.class);
+
+        mockMvc.perform(get("/recipe/get/1"))
+                .andExpect(status().isNotFound());
     }
 
     @Test
