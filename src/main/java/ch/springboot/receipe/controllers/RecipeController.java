@@ -3,10 +3,6 @@ package ch.springboot.receipe.controllers;
 import ch.springboot.receipe.commands.RecipeCommand;
 import ch.springboot.receipe.exceptions.NotFoundException;
 import ch.springboot.receipe.models.Recipe;
-import ch.springboot.receipe.repositories.CategoryRepository;
-import ch.springboot.receipe.repositories.RecipeRepository;
-import ch.springboot.receipe.repositories.UnitOfMeasureRepository;
-import ch.springboot.receipe.services.RecipeService;
 import ch.springboot.receipe.services.RecipeServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -14,8 +10,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.apache.commons.lang3.StringUtils;
 
-import javax.persistence.ExcludeDefaultListeners;
 import java.util.Optional;
 
 @Slf4j
@@ -43,18 +39,8 @@ public class RecipeController {
     }
 
     @GetMapping("/get/{id}")
-    public String getRecipeById(Model model, @PathVariable Long id) throws Exception {
-        log.info("--- GET recipe by ID: " + id);
-
-        Optional<Recipe> recipeOptional = Optional.ofNullable(recipeService.findById(id));
-        if(!recipeOptional.isPresent()) {
-            throw new Exception("IS NOT FOUND INTO DB");
-        }
-
-        Recipe recipe = recipeOptional.get();
-        log.info("Recipe with ID: " + recipe.getId());
-
-        model.addAttribute("recipe", recipe);
+    public String getRecipeById(Model model, @PathVariable String id) throws Exception {
+        model.addAttribute("recipe", recipeService.findById(Long.valueOf(id)));
         return "/recipes/details";
     }
 
@@ -92,9 +78,19 @@ public class RecipeController {
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(NotFoundException.class)
-    public ModelAndView handleNotFound() {
+    public ModelAndView handleNotFound(Exception exception) {
         log.error("Handling not found exception");
         ModelAndView maw = new ModelAndView("recipes/exceptions/404error");
+        maw.addObject("exception", exception);
+        return maw;
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(NumberFormatException.class)
+    public ModelAndView handleNumberFormat(Exception exception) {
+        log.error("Handling bad request");
+        ModelAndView maw = new ModelAndView("recipes/exceptions/400error");
+        maw.addObject("exception", exception);
         return maw;
     }
 }
