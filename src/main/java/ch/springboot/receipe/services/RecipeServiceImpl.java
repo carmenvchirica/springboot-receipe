@@ -3,6 +3,7 @@ package ch.springboot.receipe.services;
 import ch.springboot.receipe.commands.RecipeCommand;
 import ch.springboot.receipe.converters.RecipeCommandToRecipe;
 import ch.springboot.receipe.converters.RecipeToRecipeCommand;
+import ch.springboot.receipe.exceptions.NotFoundException;
 import ch.springboot.receipe.models.Recipe;
 import ch.springboot.receipe.repositories.RecipeRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -41,7 +42,7 @@ public class RecipeServiceImpl implements RecipeService {
         Optional<Recipe> recipeOptional = recipeRepository.findById(l);
 
         if (!recipeOptional.isPresent()) {
-            throw new RuntimeException("Recipe Not Found!");
+            throw new NotFoundException("Recipe Not Found!");
         }
 
         return recipeOptional.get();

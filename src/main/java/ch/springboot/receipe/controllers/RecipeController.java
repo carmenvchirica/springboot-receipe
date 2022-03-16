@@ -1,6 +1,7 @@
 package ch.springboot.receipe.controllers;
 
 import ch.springboot.receipe.commands.RecipeCommand;
+import ch.springboot.receipe.exceptions.NotFoundException;
 import ch.springboot.receipe.models.Recipe;
 import ch.springboot.receipe.repositories.CategoryRepository;
 import ch.springboot.receipe.repositories.RecipeRepository;
@@ -8,10 +9,13 @@ import ch.springboot.receipe.repositories.UnitOfMeasureRepository;
 import ch.springboot.receipe.services.RecipeService;
 import ch.springboot.receipe.services.RecipeServiceImpl;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
+import javax.persistence.ExcludeDefaultListeners;
 import java.util.Optional;
 
 @Slf4j
@@ -84,5 +88,13 @@ public class RecipeController {
 
         recipeService.deleteById(Long.valueOf(id));
         return "redirect:/recipes";
+    }
+
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(NotFoundException.class)
+    public ModelAndView handleNotFound() {
+        log.error("Handling not found exception");
+        ModelAndView maw = new ModelAndView("exceptions/404error");
+        return maw;
     }
 }
