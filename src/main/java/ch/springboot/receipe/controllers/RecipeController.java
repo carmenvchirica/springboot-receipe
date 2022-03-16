@@ -94,7 +94,7 @@ public class RecipeController {
     @ExceptionHandler(NotFoundException.class)
     public ModelAndView handleNotFound() {
         log.error("Handling not found exception");
-        ModelAndView maw = new ModelAndView("exceptions/404error");
+        ModelAndView maw = new ModelAndView("recipes/exceptions/404error");
         return maw;
     }
 }
