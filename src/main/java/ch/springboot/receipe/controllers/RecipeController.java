@@ -2,23 +2,23 @@ package ch.springboot.receipe.controllers;
 
 import ch.springboot.receipe.commands.RecipeCommand;
 import ch.springboot.receipe.exceptions.NotFoundException;
-import ch.springboot.receipe.models.Recipe;
 import ch.springboot.receipe.services.RecipeServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import org.apache.commons.lang3.StringUtils;
 
-import java.util.Optional;
+import javax.validation.Valid;
 
 @Slf4j
 @Controller
 @RequestMapping("/recipes")
 public class RecipeController {
 
+    private static final String RECIPE_FORM_URL = "recipes/recipeform";
     private final RecipeServiceImpl recipeService;
 
     public RecipeController(RecipeServiceImpl recipeService) {
@@ -48,19 +48,25 @@ public class RecipeController {
     public String updateRecipe(Model model, @PathVariable Long id) throws Exception {
         model.addAttribute("recipe", recipeService.findCommandById(Long.valueOf(id)));
 
-        return "recipes/recipeform";
+        return RECIPE_FORM_URL;
     }
 
     @RequestMapping("/new")
     public String newRecipe(Model model) {
         model.addAttribute("recipe", new RecipeCommand());
-
-        return "recipes/recipeform";
+        return RECIPE_FORM_URL;
     }
 
-    @PostMapping
-    @RequestMapping("/recipe")
-    public String saveOrUpdate(@ModelAttribute RecipeCommand recipeCommand) {
+    @PostMapping("/recipe")
+    public String saveOrUpdate(@Valid @ModelAttribute("recipe") RecipeCommand recipeCommand, BindingResult result) {
+
+        if(result.hasErrors()) {
+            log.debug("Errors: ");
+            result.getAllErrors().forEach(err -> {
+                log.debug(err.toString());
+            });
+            return RECIPE_FORM_URL;
+        }
         RecipeCommand savedCommand = recipeService.saveRecipeCommand(recipeCommand);
 
         return "redirect:/recipes/get/" + savedCommand.getId();
@@ -85,12 +91,5 @@ public class RecipeController {
         return maw;
     }
 
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(NumberFormatException.class)
-    public ModelAndView handleNumberFormat(Exception exception) {
-        log.error("Handling bad request");
-        ModelAndView maw = new ModelAndView("recipes/exceptions/400error");
-        maw.addObject("exception", exception);
-        return maw;
-    }
+
 }
